@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "poppins", sans-serif;
+}
+
+body {
+    background-color: lightgray;
+}
+
+header {
+    margin: 2rem auto;
+    width: min(90%, 1200px);
+    text-align: center;
+    background-color: rgb(135, 156, 201);
+    border-radius: 2rem;
+    padding: 1rem;
+}
+
+.container {
+    width: min(90%, 1200px);
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: rgb(255, 255, 255);
+}
+
+.add-task {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.add-task input {
+    border-radius: 1rem;
+    min-width: 60%;
+    padding: 0.8rem;
+    border-style: none;
+    background-color: beige;
+    color: dimgray;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.add-task input:focus {
+    outline: none;
+}
+
+.add-task button {
+    border-radius: 1rem;
+    border-style: none;
+    width: 80px;
+    padding: 0.5rem;
+    background-color: rgb(218, 206, 206);
+    color: rgb(97, 100, 90);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.add-task button:hover {
+    background-color: rgb(168, 161, 161);
+    color: rgb(28, 28, 26);
+    transform: scale(1.05);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.column {
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.todo {
+    background-color: rgb(222, 225, 218);
+}
+
+.doing {
+    background-color: rgb(195, 206, 206);
+}
+
+.done {
+    background-color: rgb(214, 224, 236);
+}
+
+.column h2 {
+    border-radius: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+    background-color: rgb(156, 149, 141);
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.task-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.task-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 10px;
+    background-color: aliceblue;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+}
+
+.task-card button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-btn,
+.tick-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.task-actions {
+    display: none;
+}
+
+.move-btn img,
+.delete-btn img,
+.tick-btn img {
+    width: 1.5rem;
+}
+
+.edit-btn img {
+    width: 1.2rem;
+}
+
+.task-card:hover .task-title {
+    display: none;
+}
+
+.task-card:hover .task-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:2rem;
+}
+.task-update{
+    flex:1;
+    min-width: 0;
+    border-style: none;
+    background: none;
+
+}
+.task-update:focus{
+    outline: none;
+}
+
+@media  (max-width: 800px){
+    .board{
+        display:flex;
+        flex-direction: column;
+    }
+}
