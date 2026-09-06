@@ -48,6 +48,9 @@ function renderTasks() {
     let doneCount = 0;
     tasks.forEach((task) => {
         const taskCard = document.createElement("div");
+        taskCard.addEventListener("click", () => {
+            taskCard.classList.toggle("active");
+        });
         taskCard.className = "task-card";
         taskCard.innerHTML = `
         <p class="task-title">${task.title}</p>
@@ -84,10 +87,10 @@ function renderTasks() {
         editBtn.addEventListener("click", () => {
             taskCard.innerHTML = `<input class="task-update" type="text" placeholder="Edit Task...">
             <button class="tick-btn"><img src= "tick.svg" alt=""></button>`
-            const editInput = document.querySelector(".task-update");
-            const tickBtn = document.querySelector(".tick-btn");
+            const editInput = taskCard.querySelector(".task-update");
+            const tickBtn = taskCard.querySelector(".tick-btn");
             tickBtn.addEventListener("click", () => {
-                task.title=editInput.value;
+                task.title = editInput.value;
                 renderTasks();
             });
         });

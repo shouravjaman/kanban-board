@@ -170,22 +170,43 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap:2rem;
+    gap: 2rem;
 }
-.task-update{
-    flex:1;
+
+.task-update {
+    flex: 1;
     min-width: 0;
     border-style: none;
     background: none;
 
 }
-.task-update:focus{
+
+.task-update:focus {
     outline: none;
 }
 
-@media  (max-width: 800px){
-    .board{
-        display:flex;
+@media (max-width: 800px) {
+    .board {
+        display: flex;
         flex-direction: column;
+    }
+
+    .task-card:hover .task-title {
+        display: block;
+    }
+
+    .task-card:hover .task-actions {
+        display: none;
+    }
+
+    .task-card.active .task-title {
+        display: none;
+    }
+
+    .task-card.active .task-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3.5rem;
     }
 }
