@@ -8,14 +8,15 @@
 }
 
 body {
-    background-color: lightgray;
+    background-color: #F6F1E9;
 }
 
 header {
     margin: 2rem auto;
     width: min(90%, 1200px);
     text-align: center;
-    background-color: rgb(135, 156, 201);
+    background-color: #1F4B43;
+    color: #FFFFFF;
     border-radius: 2rem;
     padding: 1rem;
 }
@@ -40,9 +41,9 @@ header {
     border-radius: 1rem;
     min-width: 60%;
     padding: 0.8rem;
-    border-style: none;
+    border: 2px solid#D9D1C2;
     background-color: beige;
-    color: dimgray;
+    color: #7A6F63;
     font-size: 1rem;
     font-weight: 400;
 }
@@ -56,16 +57,16 @@ header {
     border-style: none;
     width: 80px;
     padding: 0.5rem;
-    background-color: rgb(218, 206, 206);
-    color: rgb(97, 100, 90);
+    background-color: #1F4B43;
+    color: #FFFFFF;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s ease;
 }
 
 .add-task button:hover {
-    background-color: rgb(168, 161, 161);
-    color: rgb(28, 28, 26);
+    background-color: #16362F;
+    color: #FFFFFF;
     transform: scale(1.05);
 }
 
@@ -81,19 +82,47 @@ header {
     display: flex;
     flex-direction: column;
     border-radius: 0.75rem;
+    border: 2px solid black;
     padding: 1rem;
+    position: relative;
+    isolation: isolate;
+    color:#221D1A;
+}
+
+.column::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translate(8px, 8px);
+    border-radius: 0.75rem;
+    z-index: -1;
 }
 
 .todo {
-    background-color: rgb(222, 225, 218);
+    background-color: #a5bdc7;
+}
+
+.todo::before {
+    background-color: #BFD0E0;
+    border: 2px solid#7d7f95;
 }
 
 .doing {
-    background-color: rgb(195, 206, 206);
+    background-color: #958b9f;
+}
+
+.doing::before {
+    background-color: #664b6a;
+    border: 2px solid#401F3E;
 }
 
 .done {
-    background-color: rgb(214, 224, 236);
+    background-color: #95979F;
+}
+
+.done::before {
+    background-color: #1F4B43;
+    border: 2px solid#A9ABB1;
 }
 
 .column h2 {
