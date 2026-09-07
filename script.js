@@ -1,20 +1,4 @@
-let tasks = [
-    {
-        id: 1,
-        title: "Learn JavaScript",
-        status: "todo"
-    },
-    {
-        id: 2,
-        title: "Practice CSS",
-        status: "doing"
-    },
-    {
-        id: 3,
-        title: "Build project",
-        status: "done"
-    },
-];
+let tasks = [];
 const input = document.querySelector(".add-task input");
 const addBtn = document.querySelector(".add");
 const todoList = document.querySelector(".todo .task-list");
