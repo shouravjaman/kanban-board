@@ -1,24 +1,45 @@
-let tasks = [];
+const tasks = [];
 const input = document.querySelector(".add-task input");
 const addBtn = document.querySelector(".add");
 const todoList = document.querySelector(".todo .task-list");
 const doingList = document.querySelector(".doing .task-list");
 const doneList = document.querySelector(".done .task-list");
-addBtn.addEventListener("click", () => {
+
+async function loadTasks() {
+    const response = await fetch("http://localhost:3000/api/tasks")
+    const data = await response.json();
+    tasks.push(...data.tasks);
+    renderTasks();
+};
+loadTasks();
+
+addBtn.addEventListener("click", async () => {
     if (input.value.trim() === "") {
         return;
     }
-    const task =
-    {
-        id: tasks.length + 1,
-        title: input.value,
-        status: "todo",
+
+    const response = await fetch("http://localhost:3000/api/tasks", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            title: input.value
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        alert("Failed to create task");
+        return;
     }
 
-    tasks.push(task);
+    tasks.push(data);
     renderTasks();
     input.value = "";
 });
+
 
 function renderTasks() {
     todoList.innerHTML = "";
@@ -58,28 +79,64 @@ function renderTasks() {
             doneList.append(taskCard);
         }
         const moveBtn = taskCard.querySelector(".move-btn");
-        moveBtn.addEventListener("click", () => {
+        moveBtn.addEventListener("click", async () => {
+            let tobeStatus = "";
             if (task.status === "todo") {
-                task.status = "doing";
+                tobeStatus = "doing";
             } else if (task.status === "doing") {
-                task.status = "done";
+                tobeStatus = "done";
             }
+            const response = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ status: tobeStatus })
+            });
+            if (!response.ok) {
+                alert("Failed to update status");
+                return;
+            }
+            const updatedTask = await response.json();
+            task.status = updatedTask.status;
             renderTasks();
         });
         const editBtn = taskCard.querySelector(".edit-btn")
         const deleteBtn = taskCard.querySelector(".delete-btn")
         editBtn.addEventListener("click", () => {
-            taskCard.innerHTML = `<input class="task-update" type="text" placeholder="Edit Task...">
+            taskCard.innerHTML = `<input class="task-update" type="text" placeholder="Edit Task..." value="${task.title}">
             <button class="tick-btn"><img src= "tick.svg" alt=""></button>`
             const editInput = taskCard.querySelector(".task-update");
             const tickBtn = taskCard.querySelector(".tick-btn");
-            tickBtn.addEventListener("click", () => {
-                task.title = editInput.value;
+            tickBtn.addEventListener("click", async () => {
+                const response = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ title: editInput.value })
+                })
+                if (!response.ok) {
+                    alert("Failed to update status");
+                    return;
+                }
+                const updatedTask = await response.json();
+                task.title = updatedTask.title;
                 renderTasks();
             });
         });
-        deleteBtn.addEventListener("click", () => {
-            tasks = tasks.filter(t => t.id !== task.id);
+        deleteBtn.addEventListener("click", async () => {
+            const response = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
+                method: "DELETE",
+            })
+            if (!response.ok) {
+                alert("Failed to delete task");
+                return;
+            }
+            const taskIndex = tasks.findIndex(t => t.id === task.id);
+            if (taskIndex !== -1) {
+                tasks.splice(taskIndex, 1);
+            }
             renderTasks();
         });
     });
@@ -87,4 +144,5 @@ function renderTasks() {
     doingTitle.textContent = `Doing (${doingCount})`;
     doneTitle.textContent = `Done (${doneCount})`;
 }
+
 renderTasks();
