@@ -4,9 +4,9 @@ const addBtn = document.querySelector(".add");
 const todoList = document.querySelector(".todo .task-list");
 const doingList = document.querySelector(".doing .task-list");
 const doneList = document.querySelector(".done .task-list");
-
+const BASE_API_URL="https://kanban-board-2bn5.onrender.com";
 async function loadTasks() {
-    const response = await fetch("http://localhost:3000/api/tasks")
+    const response = await fetch(`${API_BASE_URL}/api/tasks`)
     if (!response.ok) {
         console.error("Failed to load tasks:", data);
         return;
@@ -22,7 +22,7 @@ addBtn.addEventListener("click", async () => {
         return;
     }
 
-    const response = await fetch("http://localhost:3000/api/tasks", {
+    const response = await fetch(`${API_BASE_URL}/api/tasks`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -90,7 +90,7 @@ function renderTasks() {
             } else if (task.status === "doing") {
                 tobeStatus = "done";
             }
-            const response = await fetch(`http://localhost:3000/api/tasks/${task._id}`, {
+            const response = await fetch(`${BASE_API_URL}/api/tasks/${task._id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -113,7 +113,7 @@ function renderTasks() {
             const editInput = taskCard.querySelector(".task-update");
             const tickBtn = taskCard.querySelector(".tick-btn");
             tickBtn.addEventListener("click", async () => {
-                const response = await fetch(`http://localhost:3000/api/tasks/${task._id}`, {
+                const response = await fetch(`${BASE_API_URL}/api/tasks/${task._id}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
@@ -130,7 +130,7 @@ function renderTasks() {
             });
         });
         deleteBtn.addEventListener("click", async () => {
-            const response = await fetch(`http://localhost:3000/api/tasks/${task._id}`, {
+            const response = await fetch(`${BASE_API_URL}/api/tasks/${task._id}`, {
                 method: "DELETE",
             })
             if (!response.ok) {
