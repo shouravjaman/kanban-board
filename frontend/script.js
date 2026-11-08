@@ -6,9 +6,9 @@ const doingList = document.querySelector(".doing .task-list");
 const doneList = document.querySelector(".done .task-list");
 const BASE_API_URL="https://kanban-board-2bn5.onrender.com";
 async function loadTasks() {
-    const response = await fetch(`${API_BASE_URL}/api/tasks`)
+    const response = await fetch(`${BASE_API_URL}/api/tasks`)
     if (!response.ok) {
-        console.error("Failed to load tasks:", data);
+        console.error("Failed to load tasks:", response.status);
         return;
     }
     const data = await response.json();
@@ -22,7 +22,7 @@ addBtn.addEventListener("click", async () => {
         return;
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/tasks`, {
+    const response = await fetch(`${BASE_API_URL}/api/tasks`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
