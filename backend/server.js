@@ -42,25 +42,30 @@ app.post("/api/tasks", async (req, res) => {
 });
 
 app.patch("/api/tasks/:id", async (req, res) => {
-    const task = await Task.findById(req.params.id);
-    if (!task) {
-        return res.status(404).json({ message: "Task not found!" });
-    }
-    const { title, status } = req.body;
-    const updated = {};
-    if (title !== undefined) {
-        if (typeof title !== "string" || !title.trim()) {
-            return res.status(400).send("Invalid title");
-        }
-        updated.title = title.trim()
-    }
-    if (status !== undefined) {
-        if (!["todo", "doing", "done"].includes(status)) {
-            return res.status(400).send("Invalid status");
-        }
-        updated.status = status;
-    }
+    const requestStart = performance.now();
     try {
+        const { title, status } = req.body;
+        const updated = {};
+        if (title !== undefined) {
+            if (typeof title !== "string" || !title.trim()) {
+                return res.status(400).send("Invalid title");
+            }
+            updated.title = title.trim()
+        }
+        if (status !== undefined) {
+            if (!["todo", "doing", "done"].includes(status)) {
+                return res.status(400).send("Invalid status");
+            }
+            updated.status = status;
+        }
+        if (Object.keys(updated).length === 0) {
+            return res.status(400).json({
+                message: "No valid fields provided"
+            });
+        }
+
+        const dbStart = performance.now();
+
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id,
             updated,
@@ -68,6 +73,24 @@ app.patch("/api/tasks/:id", async (req, res) => {
                 new: true, runValidators: true
             }
         )
+        console.log(
+            "Database operation:",
+            (performance.now() - dbStart).toFixed(2),
+            "ms"
+        );
+
+        if (!updatedTask) {
+            return res.status(404).json({
+                message: "Task not found!"
+            });
+        }
+
+        console.log(
+            "Total backend processing:",
+            (performance.now() - requestStart).toFixed(2),
+            "ms"
+        );
+
         return res.status(200).json(updatedTask);
     } catch (error) {
         return res.status(500).json({
