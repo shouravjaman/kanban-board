@@ -4,17 +4,36 @@ const addBtn = document.querySelector(".add");
 const todoList = document.querySelector(".todo .task-list");
 const doingList = document.querySelector(".doing .task-list");
 const doneList = document.querySelector(".done .task-list");
-const BASE_API_URL="https://kanban-board-2bn5.onrender.com";
+const BASE_API_URL = "https://kanban-board-2bn5.onrender.com";
+const loadingOverlay = document.querySelector(".loading-overlay");
+const loadingMessage = document.querySelector(".loadingMessage");
+
+function showLoading(message = "Connecting to server...") {
+    loadingMessage.textContent = message;
+    loadingOverlay.classList.remove("hidden");
+}
+
+function hideLoading() {
+    loadingOverlay.classList.add("hidden");
+}
 async function loadTasks() {
-    const response = await fetch(`${BASE_API_URL}/api/tasks`)
-    if (!response.ok) {
-        console.error("Failed to load tasks:", response.status);
-        return;
+    showLoading("Connecting to server... This may take a moment.");
+    try {
+        const response = await fetch(`${BASE_API_URL}/api/tasks`);
+        if (!response.ok) {
+            throw new Error("Failed to load tasks");
+        }
+        const data = await response.json();
+        tasks.splice(0, tasks.length, ...data.tasks);
+        renderTasks();
+
+        hideLoading();
+
+    } catch (error) {
+        console.error(error);
+        loadingMessage.textContent ="Unable to connect. Please try again.";
     }
-    const data = await response.json();
-    tasks.splice(0, tasks.length, ...data.tasks);
-    renderTasks();
-};
+}
 loadTasks();
 
 addBtn.addEventListener("click", async () => {
